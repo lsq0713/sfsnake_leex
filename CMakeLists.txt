@@ -20,5 +20,7 @@ set_property(TARGET main PROPERTY
   CXX_STANDARD          17
   CXX_STANDARD_REQUIRED ON)
 
-file(COPY "assets" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
+file(COPY "assets/Fonts" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
+file(COPY "assets/Music" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
+file(COPY "assets/Sounds" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
 

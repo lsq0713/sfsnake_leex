@@ -25,7 +25,7 @@ public:
 	static const int Width = 640;
 	static const int Height = 480;
 
-	static std::shared_ptr<Screen> Screen;
+	static std::shared_ptr<Screen> GameScreen;
 
 private:
 	sf::RenderWindow window_;

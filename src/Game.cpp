@@ -9,7 +9,7 @@ using namespace sfSnake;
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 
-std::shared_ptr<Screen> Game::Screen = std::make_shared<MenuScreen>();
+std::shared_ptr<Screen> Game::GameScreen = std::make_shared<MenuScreen>();
 
 Game::Game()
 : window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
@@ -29,18 +29,18 @@ void Game::handleInput()
 			window_.close();
 	}
 
-	Game::Screen->handleInput(window_);
+	Game::GameScreen->handleInput(window_);
 }
 
 void Game::update(sf::Time delta)
 {
-	Game::Screen->update(delta);
+	Game::GameScreen->update(delta);
 }
 
 void Game::render()
 {
 	window_.clear();
-	Game::Screen->render(window_);
+	Game::GameScreen->render(window_);
 	window_.display();
 }
 
