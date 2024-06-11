@@ -13,11 +13,11 @@ using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-Snake::Snake() : direction_(Direction::Up), hitSelf_(false)
+Snake::Snake() : direction_(Direction(0, -1)), tailOverlap_(0u), score_(InitialSize), speedup_(false), nodeRadius_(Game::GameVideoMode.width / 100.0f), hitSelf_(false)
 {
 	initNodes();
 
-	pickupBuffer_.loadFromFile("Sounds/pickup.aiff");
+	pickupBuffer_.loadFromFile("Sounds/pickup.wav");
 	pickupSound_.setBuffer(pickupBuffer_);
 	pickupSound_.setVolume(30);
 
@@ -36,16 +36,44 @@ void Snake::initNodes()
 	}
 }
 
-void Snake::handleInput()
+void Snake::handleInput(sf::RenderWindow &window)
 {
+	printf("Snake begin handleInput\n");
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		direction_ = Direction::Up;
+		direction_ = Direction(0, -1);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		direction_ = Direction::Down;
+		direction_ = Direction(0, 1);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		direction_ = Direction::Left;
+		direction_ = Direction(-1, 0);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		direction_ = Direction::Right;
+		direction_ = Direction(1, 0);
+
+	static double directionSize;
+
+    if (!Game::mouseButtonLocked)
+    {
+        if (
+            sf::Mouse::isButtonPressed(sf::Mouse::Left) ||
+            sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        {
+            static sf::Vector2i MousePosition;
+            MousePosition = sf::Mouse::getPosition(window);
+            if (
+                dis(MousePosition,
+                    sf::Vector2f(
+                        Game::GameVideoMode.width / 15.0f * 14.0f,
+                        Game::GameVideoMode.width / 15.0f)) >
+                Game::GameVideoMode.width / 16.0f)
+            {
+                direction_ =
+                    static_cast<sf::Vector2f>(MousePosition) -
+                    toWindow(nodes_[0].getPosition());
+                directionSize = length(direction_);
+                direction_.x /= directionSize;
+                direction_.y /= directionSize;
+            }
+        }
+    }
 }
 
 void Snake::update(sf::Time delta)
@@ -68,12 +96,12 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
 	if (toRemove != fruits.end())
 	{
 		pickupSound_.play();
-		grow();
+		grow(toRemove->getScore());
 		fruits.erase(toRemove);
 	}
 }
 
-void Snake::grow()
+/*void Snake::grow()
 {
 	switch (direction_)
 	{
@@ -94,6 +122,11 @@ void Snake::grow()
 			nodes_[nodes_.size() - 1].getPosition().y)));
 		break;
 	}
+}*/
+void Snake::grow(int score)
+{
+    tailOverlap_ += score * 10;
+    score_ += score;
 }
 
 unsigned Snake::getSize() const
@@ -135,7 +168,7 @@ void Snake::checkEdgeCollisions()
 		headNode.setPosition(headNode.getPosition().x, 0);
 }
 
-void Snake::move()
+/*void Snake::move()
 {
 	for (decltype(nodes_.size()) i = nodes_.size() - 1; i > 0; --i)
 	{
@@ -157,10 +190,43 @@ void Snake::move()
 		nodes_[0].move(SnakeNode::Width, 0);
 		break;
 	}
+}*/
+void Snake::move()
+{
+    SnakeNode &headNode = nodes_[0];
+    int times = speedup_ ? 2 : 1;
+    for (int i = 1; i <= times; i++)
+    {
+		nodes_.insert(nodes_.begin(), 
+		SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
+            headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0)
+            ));
+        /*nodes_.push_front(SnakeNode(
+            headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
+            headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0));*/
+        if (tailOverlap_)
+            tailOverlap_--;
+        else
+            nodes_.pop_back();
+    }
 }
 
 void Snake::render(sf::RenderWindow& window)
 {
 	for (auto node : nodes_)
 		node.render(window);
+}
+
+sf::Vector2f Snake::toWindow(sf::Vector2f node)
+{
+
+    while (node.x < 0)
+        node.x = node.x + Game::GameVideoMode.width;
+    while (node.x > Game::GameVideoMode.width)
+        node.x = node.x - Game::GameVideoMode.width;
+    while (node.y < 0)
+        node.y = node.y + Game::GameVideoMode.height;
+    while (node.y > Game::GameVideoMode.height)
+        node.y = node.y - Game::GameVideoMode.height;
+    return node;
 }

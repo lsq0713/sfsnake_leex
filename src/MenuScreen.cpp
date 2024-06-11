@@ -24,25 +24,31 @@ MenuScreen::MenuScreen()
 
 	sf::FloatRect textBounds = text_.getLocalBounds();
 	text_.setOrigin(textBounds.left + textBounds.width / 2,
-		textBounds.top + textBounds.height / 2);
+					textBounds.top + textBounds.height / 2);
 	text_.setPosition(Game::Width / 2, Game::Height / 2);
 
 	sf::FloatRect snakeTextBounds = snakeText_.getLocalBounds();
 	snakeText_.setOrigin(snakeTextBounds.left + snakeTextBounds.width / 2,
-		snakeTextBounds.top + snakeTextBounds.height / 2);
+						 snakeTextBounds.top + snakeTextBounds.height / 2);
 	snakeText_.setPosition(Game::Width / 2, Game::Height / 4);
 }
 
-void MenuScreen::handleInput(sf::RenderWindow& window)
+void MenuScreen::handleInput(sf::RenderWindow &window)
 {
+	printf("MenuScreen begin handleInput\n");
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		printf("MenuScreen choce space\n");
 		Game::GameScreen = std::make_shared<GameScreen>();
+	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		window.close();
+	printf("MenuScreen end handleInput\n");
 }
 
 void MenuScreen::update(sf::Time delta)
 {
+	printf("MenuScreen begin update\n");
 	static bool movingLeft = false;
 	static bool movingRight = true;
 
@@ -67,9 +73,10 @@ void MenuScreen::update(sf::Time delta)
 			movingRight = true;
 		}
 	}
+	printf("MenuScreen end update\n");
 }
 
-void MenuScreen::render(sf::RenderWindow& window)
+void MenuScreen::render(sf::RenderWindow &window)
 {
 	window.draw(text_);
 	window.draw(snakeText_);

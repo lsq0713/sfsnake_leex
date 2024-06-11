@@ -76,3 +76,11 @@ for (auto& it = fruits.begin(); it != fruits.end(); ++it)
 ### fix
 
 注意到每次调用`setColor`时均存在warning，查阅得目前setColor已被建议修改为`setFillColor`，故用其进行替换
+
+## 鼠标控制逻辑
+
+在各类中进行了一番修改以增加鼠标控制逻辑
+
+将assets中的pickup.tiff转码为pickup.wav以正确播放
+
+编译成功，然而开始游戏后立刻会跳入死亡界面，经过debug发现一旦开始游戏就会触发`hitself`

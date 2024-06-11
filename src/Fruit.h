@@ -13,11 +13,14 @@ public:
 	void render(sf::RenderWindow& window);
 
 	sf::FloatRect getBounds() const;
+	int getScore();
 
 private:
 	sf::CircleShape shape_;
 
 	static const float Radius;
+
+	int score_;
 };
 }
 
