@@ -72,3 +72,7 @@ for (auto& it = fruits.begin(); it != fruits.end(); ++it)
 ```
 
 修复后不再生成在同一行！
+
+### fix
+
+注意到每次调用`setColor`时均存在warning，查阅得目前setColor已被建议修改为`setFillColor`，故用其进行替换
