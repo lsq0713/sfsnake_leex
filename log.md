@@ -1,5 +1,7 @@
 # 修改日志
 
+## 版本 1
+
 对原版的文件进行一定的组织：
 
 - 将代码放入`src/`目录下
@@ -55,3 +57,18 @@ for (auto& it = fruits.begin(); it != fruits.end(); ++it)
 这个报错是因为在代码中，在 for 循环中尝试将 fruits.begin() 的返回值（std::vector<sfSnake::Fruit>::iterator 类型）绑定到一个非常量左值引用 auto& it 上，这是不允许的。
 
 解决方法：将 auto& it 改为 auto it，这样就不再尝试将迭代器绑定到一个非常量引用上了。经过重新编译，编译成功
+
+## 版本 2
+
+### fix
+
+运行后发现存在bug，水果将一直生成在同一行。在GameScreen.cpp中修改相应代码
+
+```c++
+// GameScreen.cpp
+- static std::default_random_engine engine;
+- engine.seed(time(NULL));
++ static std::default_random_engine engine(time(NULL));
+```
+
+修复后不再生成在同一行！
