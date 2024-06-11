@@ -45,7 +45,7 @@ void Game::handleInput()
 	// printf("Game begin handleInput\n");
 	while (window_.pollEvent(event))
 	{
-		printf("Game inside handleInput\n");
+		// printf("Game inside handleInput\n");
 		if (event.type == sf::Event::Closed)
 			window_.close();
 	}
@@ -70,7 +70,7 @@ void Game::run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	printf("Game before window_.isOpen()\n");
+	// printf("Game before window_.isOpen()\n");
 	while (window_.isOpen())
 	{
 		sf::Time delta = clock.restart();
@@ -78,7 +78,7 @@ void Game::run()
 		// printf("Game before timeSinceLastUpdate > Game::TimePerFrame\n");
 		while (timeSinceLastUpdate > Game::TimePerFrame)
 		{
-			printf("Game inside run\n");
+			// printf("Game inside run\n");
 			timeSinceLastUpdate -= TimePerFrame;
 			handleInput();
 			update(TimePerFrame);

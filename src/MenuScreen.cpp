@@ -35,20 +35,20 @@ MenuScreen::MenuScreen()
 
 void MenuScreen::handleInput(sf::RenderWindow &window)
 {
-	printf("MenuScreen begin handleInput\n");
+	// printf("MenuScreen begin handleInput\n");
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		printf("MenuScreen choce space\n");
+		// printf("MenuScreen choce space\n");
 		Game::GameScreen = std::make_shared<GameScreen>();
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		window.close();
-	printf("MenuScreen end handleInput\n");
+	// printf("MenuScreen end handleInput\n");
 }
 
 void MenuScreen::update(sf::Time delta)
 {
-	printf("MenuScreen begin update\n");
+	// printf("MenuScreen begin update\n");
 	static bool movingLeft = false;
 	static bool movingRight = true;
 
@@ -73,7 +73,7 @@ void MenuScreen::update(sf::Time delta)
 			movingRight = true;
 		}
 	}
-	printf("MenuScreen end update\n");
+	// printf("MenuScreen end update\n");
 }
 
 void MenuScreen::render(sf::RenderWindow &window)

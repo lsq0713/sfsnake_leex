@@ -115,3 +115,66 @@ void Snake::checkSelfCollisions()
    }
 }
 ```
+
+## 版本 3
+
+> 完成了对水果种类的增加，分数及出现概率的差异化
+> 注释掉部分不需要的调试语句
+> 由于背景还未改变，黑色暂时用紫色代替 TODO
+
+对`Fruit`类增加了一个初始化方法
+
+```c++
+Fruit.h
++Fruit(sf::Vector2f position = sf::Vector2f(0, 0), int FruitType = 0);
+```
+
+```c++
+Fruit.cpp
+Fruit::Fruit(sf::Vector2f position, int FruitType)
+{
+   shape_.setPosition(position);
+   shape_.setRadius(Fruit::Radius);
+   if (FruitType < 0)
+   {
+      FruitType = -FruitType;
+   }
+   FruitType = FruitType % 8;
+   if (FruitType < 3)
+   {
+      shape_.setFillColor(sf::Color::Green);	// Green
+      score_ = 1;
+   }
+   else if (FruitType < 5)
+   {
+      shape_.setFillColor(sf::Color::Blue);	// Blue
+      score_ = 2;
+   }
+   else if (FruitType < 6)
+   {
+      shape_.setFillColor(sf::Color::Red);	// Red
+      score_ = 1;
+   }
+   else if (FruitType < 7)
+   {
+      shape_.setFillColor(sf::Color(0x935116ee));// Brown
+      score_ = 0;
+   }
+   else
+   {
+      shape_.setFillColor(sf::Color(0xe00aeaee));// Black // TODO
+      score_ = 0;
+   }
+   // printf("x: %f, y: %f, color: %d\n", position.x, position.y, FruitType);
+}
+```
+
+同时在`GameScreen.cpp`中传入一个整数作为第二个参数
+
+不同水果的出现概率：
+
+- 黑色（目前为紫色）12.5%
+- 棕色 12.5%
+- 红色 12.5%
+- 蓝色 25%
+- 绿色 37.5%

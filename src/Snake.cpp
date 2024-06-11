@@ -38,7 +38,7 @@ void Snake::initNodes()
 
 void Snake::handleInput(sf::RenderWindow &window)
 {
-	printf("Snake begin handleInput\n");
+	// printf("Snake begin handleInput\n");
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		direction_ = Direction(0, -1);
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
@@ -125,7 +125,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 }*/
 void Snake::grow(int score)
 {
-	tailOverlap_ += score * 5;
+	tailOverlap_ += score * 3;
 	score_ += score;
 }
 
@@ -200,12 +200,12 @@ void Snake::move()
 {
 	SnakeNode &headNode = nodes_[0];
 	// debug
-	int debug = 0;
-	for (auto node : nodes_)
-	{
-		std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
-		debug++;
-	}
+	// int debug = 0;
+	// for (auto node : nodes_)
+	// {
+	// 	std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
+	// 	debug++;
+	// }
 	// debug
 	int times = speedup_ ? 2 : 1;
 	for (int i = 1; i <= times; i++)
@@ -226,12 +226,12 @@ void Snake::move()
 			nodes_.pop_back();
 	}
 	// debug
-	debug = 0;
-	for (auto node : nodes_)
-	{
-		std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
-		debug++;
-	}
+	// debug = 0;
+	// for (auto node : nodes_)
+	// {
+	// 	std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
+	// 	debug++;
+	// }
 	// debug
 }
 
