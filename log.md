@@ -91,3 +91,27 @@ for (auto& it = fruits.begin(); it != fruits.end(); ++it)
 
 - 水果的种类还未完成，吃水果增长太多
 - 转弯角度限制太大，鼠标操纵时容易自杀
+
+通过修改自碰撞逻辑改善了转弯角度：只检测碰撞到第五个节点及之后的节点才算自杀
+
+```c++
+void Snake::checkSelfCollisions()
+{
+   SnakeNode &headNode = nodes_[0];
+   if (nodes_.size() < 5)
+   {
+      dieSound_.play();
+      sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
+      hitSelf_ = true;
+   } // 此处逻辑是为了后续加入减少长度机制设计的，同时增强健壮性，保证总有死亡可能
+   for (decltype(nodes_.size()) i = 5; i < nodes_.size(); ++i)
+   {
+      if (headNode.getBounds().intersects(nodes_[i].getBounds()))
+      {
+         dieSound_.play();
+         sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
+         hitSelf_ = true;
+      }
+   }
+}
+```

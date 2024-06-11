@@ -125,7 +125,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 }*/
 void Snake::grow(int score)
 {
-	tailOverlap_ += score * 10;
+	tailOverlap_ += score * 5;
 	score_ += score;
 }
 
@@ -142,8 +142,13 @@ bool Snake::hitSelf() const
 void Snake::checkSelfCollisions()
 {
 	SnakeNode &headNode = nodes_[0];
-
-	for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
+	if (nodes_.size() < 5)
+	{
+		dieSound_.play();
+		sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
+		hitSelf_ = true;
+	} // 此处逻辑是为了后续加入减少长度机制设计的，同时增强健壮性，保证总有死亡可能
+	for (decltype(nodes_.size()) i = 5; i < nodes_.size(); ++i)
 	{
 		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
 		{
