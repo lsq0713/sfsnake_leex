@@ -42,7 +42,7 @@ sf::VideoMode Game::GameVideoMode = Game::initVideoMode_();
 void Game::handleInput()
 {
 	sf::Event event;
-	printf("Game begin handleInput\n");
+	// printf("Game begin handleInput\n");
 	while (window_.pollEvent(event))
 	{
 		printf("Game inside handleInput\n");
@@ -50,8 +50,8 @@ void Game::handleInput()
 			window_.close();
 	}
 	Game::GameScreen->handleInput(window_);
-	printf("%s\n", typeid(*Game::GameScreen).name());
-	printf("Game outside handleInput\n");
+	// printf("%s\n", typeid(*Game::GameScreen).name());
+	// printf("Game outside handleInput\n");
 }
 
 void Game::update(sf::Time delta)

@@ -50,30 +50,30 @@ void Snake::handleInput(sf::RenderWindow &window)
 
 	static double directionSize;
 
-    if (!Game::mouseButtonLocked)
-    {
-        if (
-            sf::Mouse::isButtonPressed(sf::Mouse::Left) ||
-            sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        {
-            static sf::Vector2i MousePosition;
-            MousePosition = sf::Mouse::getPosition(window);
-            if (
-                dis(MousePosition,
-                    sf::Vector2f(
-                        Game::GameVideoMode.width / 15.0f * 14.0f,
-                        Game::GameVideoMode.width / 15.0f)) >
-                Game::GameVideoMode.width / 16.0f)
-            {
-                direction_ =
-                    static_cast<sf::Vector2f>(MousePosition) -
-                    toWindow(nodes_[0].getPosition());
-                directionSize = length(direction_);
-                direction_.x /= directionSize;
-                direction_.y /= directionSize;
-            }
-        }
-    }
+	if (!Game::mouseButtonLocked)
+	{
+		if (
+			sf::Mouse::isButtonPressed(sf::Mouse::Left) ||
+			sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			static sf::Vector2i MousePosition;
+			MousePosition = sf::Mouse::getPosition(window);
+			if (
+				dis(MousePosition,
+					sf::Vector2f(
+						Game::GameVideoMode.width / 15.0f * 14.0f,
+						Game::GameVideoMode.width / 15.0f)) >
+				Game::GameVideoMode.width / 16.0f)
+			{
+				direction_ =
+					static_cast<sf::Vector2f>(MousePosition) -
+					toWindow(nodes_[0].getPosition());
+				directionSize = length(direction_);
+				direction_.x /= directionSize;
+				direction_.y /= directionSize;
+			}
+		}
+	}
 }
 
 void Snake::update(sf::Time delta)
@@ -83,7 +83,7 @@ void Snake::update(sf::Time delta)
 	checkSelfCollisions();
 }
 
-void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
+void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 {
 	decltype(fruits.begin()) toRemove = fruits.end();
 
@@ -125,8 +125,8 @@ void Snake::checkFruitCollisions(std::vector<Fruit>& fruits)
 }*/
 void Snake::grow(int score)
 {
-    tailOverlap_ += score * 10;
-    score_ += score;
+	tailOverlap_ += score * 10;
+	score_ += score;
 }
 
 unsigned Snake::getSize() const
@@ -141,7 +141,7 @@ bool Snake::hitSelf() const
 
 void Snake::checkSelfCollisions()
 {
-	SnakeNode& headNode = nodes_[0];
+	SnakeNode &headNode = nodes_[0];
 
 	for (decltype(nodes_.size()) i = 1; i < nodes_.size(); ++i)
 	{
@@ -156,7 +156,7 @@ void Snake::checkSelfCollisions()
 
 void Snake::checkEdgeCollisions()
 {
-	SnakeNode& headNode = nodes_[0];
+	SnakeNode &headNode = nodes_[0];
 
 	if (headNode.getPosition().x <= 0)
 		headNode.setPosition(Game::Width, headNode.getPosition().y);
@@ -193,25 +193,44 @@ void Snake::checkEdgeCollisions()
 }*/
 void Snake::move()
 {
-    SnakeNode &headNode = nodes_[0];
-    int times = speedup_ ? 2 : 1;
-    for (int i = 1; i <= times; i++)
-    {
-		nodes_.insert(nodes_.begin(), 
+	SnakeNode &headNode = nodes_[0];
+	// debug
+	int debug = 0;
+	for (auto node : nodes_)
+	{
+		std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
+		debug++;
+	}
+	// debug
+	int times = speedup_ ? 2 : 1;
+	for (int i = 1; i <= times; i++)
+	{
+		/*nodes_.insert(nodes_.begin(),
 		SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
-            headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0)
-            ));
-        /*nodes_.push_front(SnakeNode(
-            headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
-            headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0));*/
-        if (tailOverlap_)
-            tailOverlap_--;
-        else
-            nodes_.pop_back();
-    }
+			headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0)
+			));*/
+		nodes_.insert(nodes_.begin(),
+					  SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 1.1,
+											 headNode.getPosition().y + direction_.y * i * nodeRadius_ * 1.1)));
+		/*nodes_.push_front(SnakeNode(
+			headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
+			headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0));*/
+		if (tailOverlap_)
+			tailOverlap_--;
+		else
+			nodes_.pop_back();
+	}
+	// debug
+	debug = 0;
+	for (auto node : nodes_)
+	{
+		std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
+		debug++;
+	}
+	// debug
 }
 
-void Snake::render(sf::RenderWindow& window)
+void Snake::render(sf::RenderWindow &window)
 {
 	for (auto node : nodes_)
 		node.render(window);
@@ -220,13 +239,13 @@ void Snake::render(sf::RenderWindow& window)
 sf::Vector2f Snake::toWindow(sf::Vector2f node)
 {
 
-    while (node.x < 0)
-        node.x = node.x + Game::GameVideoMode.width;
-    while (node.x > Game::GameVideoMode.width)
-        node.x = node.x - Game::GameVideoMode.width;
-    while (node.y < 0)
-        node.y = node.y + Game::GameVideoMode.height;
-    while (node.y > Game::GameVideoMode.height)
-        node.y = node.y - Game::GameVideoMode.height;
-    return node;
+	while (node.x < 0)
+		node.x = node.x + Game::GameVideoMode.width;
+	while (node.x > Game::GameVideoMode.width)
+		node.x = node.x - Game::GameVideoMode.width;
+	while (node.y < 0)
+		node.y = node.y + Game::GameVideoMode.height;
+	while (node.y > Game::GameVideoMode.height)
+		node.y = node.y - Game::GameVideoMode.height;
+	return node;
 }

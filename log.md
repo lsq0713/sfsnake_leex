@@ -73,7 +73,7 @@ for (auto& it = fruits.begin(); it != fruits.end(); ++it)
 
 修复后不再生成在同一行！
 
-### fix
+### fix 2
 
 注意到每次调用`setColor`时均存在warning，查阅得目前setColor已被建议修改为`setFillColor`，故用其进行替换
 
@@ -84,3 +84,10 @@ for (auto& it = fruits.begin(); it != fruits.end(); ++it)
 将assets中的pickup.tiff转码为pickup.wav以正确播放
 
 编译成功，然而开始游戏后立刻会跳入死亡界面，经过debug发现一旦开始游戏就会触发`hitself`
+
+经过调试，发现`move`逻辑中头节点移动太慢，会被判定与下一节点重叠，将头节点的移动速度在一定程度上加快，成功运行
+
+目前问题：
+
+- 水果的种类还未完成，吃水果增长太多
+- 转弯角度限制太大，鼠标操纵时容易自杀
