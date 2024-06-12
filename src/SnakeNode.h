@@ -27,15 +27,13 @@ namespace sfSnake
 		sf::FloatRect getBounds() const;
 		Direction getDirection() const;
 
-		// static const float Width;
-		// static const float Height;
 		static float radius;
 
 	private:
 		// sf::RectangleShape shape_;
 		sf::Texture nodeTexture;
-		sf::Sprite shape_;
-		// sf::CircleShape shape_;
+		// sf::Sprite shape_;
+		sf::CircleShape shape_;
 		sf::Vector2f position_;
 		Direction direction_;
 	};

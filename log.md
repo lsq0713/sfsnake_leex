@@ -226,3 +226,7 @@ void Snake::render(sf::RenderWindow &window)
 - direction_：方向
 
 > 或许可以在此对节点的bound定义来修改吃水果范围太小的问题
+
+### fix 水果pickup
+
+在`SnakeNode`中的shape_以`Circleshape`类型存在，去除了原先的渲染功能，只用来作为实体判定，以正确地pickup水果

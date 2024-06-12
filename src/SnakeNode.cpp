@@ -10,14 +10,9 @@ float SnakeNode::radius = 20.f;
 SnakeNode::SnakeNode(sf::Vector2f position)
 : position_(position)
 {
-	nodeTexture.loadFromFile("Image/Node.png");
-	nodeTexture.setSmooth(true);
-	sf::Vector2u nodeTextureSize = nodeTexture.getSize();
-	float nodeScale = radius / nodeTextureSize.y * 22.6;
 	shape_.setPosition(position_);
 	
-	shape_.setTexture(nodeTexture);
-	shape_.setScale(nodeScale, nodeScale);
+	shape_.setRadius(radius * 50);
 
 	setOriginMiddle(shape_);
 }
@@ -26,14 +21,9 @@ SnakeNode::SnakeNode(sf::Vector2f position, Direction direction, float nodeRadiu
 : position_(position), direction_(direction)
 {
 	radius = nodeRadius;// 加入对半径的初始化以统一程序
-	nodeTexture.loadFromFile("Image/Node.png");
-	nodeTexture.setSmooth(true);
-	sf::Vector2u nodeTextureSize = nodeTexture.getSize();
-	float nodeScale = radius / nodeTextureSize.y * 2.6;
 	shape_.setPosition(position_);
-	
-	shape_.setTexture(nodeTexture);
-	shape_.setScale(nodeScale / 5, nodeScale / 5);
+
+	shape_.setRadius(radius);
 
 	setOriginMiddle(shape_);
 }
