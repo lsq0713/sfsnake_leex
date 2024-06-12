@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 
 #include <memory>
-#include <typeinfo>// 调试用
 
 #include "MenuScreen.h"
 #include "Game.h"
@@ -42,16 +41,12 @@ sf::VideoMode Game::GameVideoMode = Game::initVideoMode_();
 void Game::handleInput()
 {
 	sf::Event event;
-	// printf("Game begin handleInput\n");
 	while (window_.pollEvent(event))
 	{
-		// printf("Game inside handleInput\n");
 		if (event.type == sf::Event::Closed)
 			window_.close();
 	}
 	Game::GameScreen->handleInput(window_);
-	// printf("%s\n", typeid(*Game::GameScreen).name());
-	// printf("Game outside handleInput\n");
 }
 
 void Game::update(sf::Time delta)
@@ -70,20 +65,16 @@ void Game::run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	// printf("Game before window_.isOpen()\n");
 	while (window_.isOpen())
 	{
 		sf::Time delta = clock.restart();
 		timeSinceLastUpdate += delta;
-		// printf("Game before timeSinceLastUpdate > Game::TimePerFrame\n");
 		while (timeSinceLastUpdate > Game::TimePerFrame)
 		{
-			// printf("Game inside run\n");
 			timeSinceLastUpdate -= TimePerFrame;
 			handleInput();
 			update(TimePerFrame);
+			render();
 		}
-
-		render();
 	}
 }

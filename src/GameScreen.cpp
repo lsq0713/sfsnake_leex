@@ -11,19 +11,15 @@ using namespace sfSnake;
 
 GameScreen::GameScreen() : snake_()
 {
-	// printf("GameScreen init\n");
 }
 
 void GameScreen::handleInput(sf::RenderWindow &window)
 {
-	// printf("GameScreen begin handleInput\n");
 	snake_.handleInput(window);
-	// printf("GameScreen end handleInput\n");
 }
 
 void GameScreen::update(sf::Time delta)
 {
-	// printf("GameScreen begin update\n");
 	if (fruit_.size() == 0)
 		generateFruit();
 
@@ -32,10 +28,8 @@ void GameScreen::update(sf::Time delta)
 
 	if (snake_.hitSelf())
 	{
-		// printf("GameScreen hitself\n");
 		Game::GameScreen = std::make_shared<GameOverScreen>(snake_.getSize());
 	}
-	// printf("GameScreen end update\n");
 }
 
 void GameScreen::render(sf::RenderWindow &window)
