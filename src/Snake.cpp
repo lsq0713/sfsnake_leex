@@ -24,6 +24,24 @@ Snake::Snake() : direction_(Direction(0, -1)), tailOverlap_(0u), score_(InitialS
 	dieBuffer_.loadFromFile("Sounds/die.wav");
 	dieSound_.setBuffer(dieBuffer_);
 	dieSound_.setVolume(50);
+
+	// 头部节点的精灵初始化
+	headTexture.loadFromFile("Image/headNode.png");
+	headTexture.setSmooth(true);
+	sf::Vector2u TextureSize = headTexture.getSize();
+	float headScale = nodeRadius_ / TextureSize.y * 2.6;
+	headSprite.setTexture(headTexture);
+	headSprite.setScale(headScale, headScale);
+	setOriginMiddle(headSprite);
+
+	// 关节节点的精灵初始化
+	nodeTexture.loadFromFile("Image/Node.png");
+	nodeTexture.setSmooth(true);
+	sf::Vector2u nodeTextureSize = nodeTexture.getSize();
+	float nodeScale = nodeRadius_ / nodeTextureSize.y * 2.6;
+	shape_.setTexture(nodeTexture);
+	shape_.setScale(nodeScale, nodeScale);
+	setOriginMiddle(shape_);
 }
 
 void Snake::initNodes()
@@ -31,8 +49,8 @@ void Snake::initNodes()
 	for (int i = 0; i < Snake::InitialSize; ++i)
 	{
 		nodes_.push_back(SnakeNode(sf::Vector2f(
-			Game::Width / 2 - SnakeNode::Width / 2,
-			Game::Height / 2 - (SnakeNode::Height / 2) + (SnakeNode::Height * i))));
+			Game::Width / 2 - nodeRadius_ / 2,
+			Game::Height / 2 - (nodeRadius_ / 2) + (nodeRadius_ * i * 2)), Direction(0, -1), nodeRadius_));
 	}
 }
 
@@ -101,28 +119,6 @@ void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 	}
 }
 
-/*void Snake::grow()
-{
-	switch (direction_)
-	{
-	case Direction::Up:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-			nodes_[nodes_.size() - 1].getPosition().y + SnakeNode::Height)));
-		break;
-	case Direction::Down:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x,
-			nodes_[nodes_.size() - 1].getPosition().y - SnakeNode::Height)));
-		break;
-	case Direction::Left:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x + SnakeNode::Width,
-			nodes_[nodes_.size() - 1].getPosition().y)));
-		break;
-	case Direction::Right:
-		nodes_.push_back(SnakeNode(sf::Vector2f(nodes_[nodes_.size() - 1].getPosition().x - SnakeNode::Width,
-			nodes_[nodes_.size() - 1].getPosition().y)));
-		break;
-	}
-}*/
 void Snake::grow(int score)
 {
 	tailOverlap_ += score * 3;
@@ -173,72 +169,51 @@ void Snake::checkEdgeCollisions()
 		headNode.setPosition(headNode.getPosition().x, 0);
 }
 
-/*void Snake::move()
-{
-	for (decltype(nodes_.size()) i = nodes_.size() - 1; i > 0; --i)
-	{
-		nodes_[i].setPosition(nodes_.at(i - 1).getPosition());
-	}
-
-	switch (direction_)
-	{
-	case Direction::Up:
-		nodes_[0].move(0, -SnakeNode::Height);
-		break;
-	case Direction::Down:
-		nodes_[0].move(0, SnakeNode::Height);
-		break;
-	case Direction::Left:
-		nodes_[0].move(-SnakeNode::Width, 0);
-		break;
-	case Direction::Right:
-		nodes_[0].move(SnakeNode::Width, 0);
-		break;
-	}
-}*/
 void Snake::move()
 {
 	SnakeNode &headNode = nodes_[0];
-	// debug
-	// int debug = 0;
-	// for (auto node : nodes_)
-	// {
-	// 	std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
-	// 	debug++;
-	// }
-	// debug
 	int times = speedup_ ? 2 : 1;
 	for (int i = 1; i <= times; i++)
 	{
-		/*nodes_.insert(nodes_.begin(),
-		SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
-			headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0)
-			));*/
 		nodes_.insert(nodes_.begin(),
-					  SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 1.1,
-											 headNode.getPosition().y + direction_.y * i * nodeRadius_ * 1.1)));
-		/*nodes_.push_front(SnakeNode(
-			headNode.getPosition().x + direction_.x * i * nodeRadius_ / 5.0,
-			headNode.getPosition().y + direction_.y * i * nodeRadius_ / 5.0));*/
+					  SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 2,
+											 headNode.getPosition().y + direction_.y * i * nodeRadius_ * 2), direction_, nodeRadius_));
 		if (tailOverlap_)
 			tailOverlap_--;
 		else
+		{
 			nodes_.pop_back();
+		}
 	}
-	// debug
-	// debug = 0;
-	// for (auto node : nodes_)
-	// {
-	// 	std::cout << "node " << debug << " x: " << node.getPosition().x << " y: " << node.getPosition().y << std::endl;
-	// 	debug++;
-	// }
-	// debug
 }
 
 void Snake::render(sf::RenderWindow &window)
 {
-	for (auto node : nodes_)
-		node.render(window);
+	headSprite.setPosition(nodes_[0].getPosition());
+	window.draw(headSprite);
+	static float angle;
+	static sf::Vector2f recDirection;
+	recDirection = direction_;
+	angle =
+		std::acos(recDirection.y / length(recDirection)) /
+		3.14159265358979323846 * 180.0;
+	if (direction_.x > 0)
+		angle = -angle;
+	headSprite.setRotation(angle);
+
+	for (int i = 1; i < nodes_.size(); i++)
+	{
+		shape_.setPosition(nodes_[i].getPosition());
+		Direction idirection = nodes_[i].getDirection();
+		recDirection = idirection;
+		angle =
+			std::acos(recDirection.y / length(recDirection)) /
+			3.14159265358979323846 * 180.0;
+		if (idirection.x > 0)
+			angle = -angle;
+		shape_.setRotation(angle);
+		window.draw(shape_);
+	}
 }
 
 sf::Vector2f Snake::toWindow(sf::Vector2f node)

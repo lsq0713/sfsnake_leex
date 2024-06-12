@@ -23,4 +23,4 @@ set_property(TARGET main PROPERTY
 file(COPY "assets/Fonts" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
 file(COPY "assets/Music" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
 file(COPY "assets/Sounds" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")
-
+file(COPY "assets/Image" DESTINATION "${CMAKE_BINARY_DIR}/${NAME}")

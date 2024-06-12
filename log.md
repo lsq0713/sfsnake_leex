@@ -142,17 +142,17 @@ Fruit::Fruit(sf::Vector2f position, int FruitType)
    FruitType = FruitType % 8;
    if (FruitType < 3)
    {
-      shape_.setFillColor(sf::Color::Green);	// Green
+      shape_.setFillColor(sf::Color::Green); // Green
       score_ = 1;
    }
    else if (FruitType < 5)
    {
-      shape_.setFillColor(sf::Color::Blue);	// Blue
+      shape_.setFillColor(sf::Color::Blue);  // Blue
       score_ = 2;
    }
    else if (FruitType < 6)
    {
-      shape_.setFillColor(sf::Color::Red);	// Red
+      shape_.setFillColor(sf::Color::Red);   // Red
       score_ = 1;
    }
    else if (FruitType < 7)
@@ -178,3 +178,51 @@ Fruit::Fruit(sf::Vector2f position, int FruitType)
 - 红色 12.5%
 - 蓝色 25%
 - 绿色 37.5%
+
+## 版本 4
+
+> 对贪吃蛇进行重绘，用精灵进行渲染，使其更美观
+> 目前贪吃蛇移动速度过快（界面太小）
+> 对吃水果的范围判定不够，导致很难吃到水果
+
+在Snake类的render方法中，更改了原来调用`SnakeNode::render`对每个节点进行渲染的模式，采用直接在`Snake::render`中直接对头部节点和关节节点进行渲染
+
+```c++
+void Snake::render(sf::RenderWindow &window)
+{
+   headSprite.setPosition(nodes_[0].getPosition());
+   window.draw(headSprite);
+   static float angle;
+   static sf::Vector2f recDirection;
+   recDirection = direction_;
+   angle =
+      std::acos(recDirection.y / length(recDirection)) /
+      3.14159265358979323846 * 180.0;
+   if (direction_.x > 0)
+      angle = -angle;
+   headSprite.setRotation(angle);
+
+   for (int i = 1; i < nodes_.size(); i++)
+   {
+      shape_.setPosition(nodes_[i].getPosition());
+      Direction idirection = nodes_[i].getDirection();
+      recDirection = idirection;
+      angle =
+         std::acos(recDirection.y / length(recDirection)) /
+         3.14159265358979323846 * 180.0;
+      if (idirection.x > 0)
+         angle = -angle;
+      shape_.setRotation(angle);
+      window.draw(shape_);
+   }
+}
+```
+
+对于`SnakeNode`类也进行了优化：
+
+由于类中的`render`在上述修改后已弃用，目前类中重要的是对节点数据的储存：
+
+- position_：位置
+- direction_：方向
+
+> 或许可以在此对节点的bound定义来修改吃水果范围太小的问题

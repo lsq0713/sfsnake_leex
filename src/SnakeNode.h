@@ -5,28 +5,40 @@
 
 namespace sfSnake
 {
-class SnakeNode
-{
-public:
-	SnakeNode(sf::Vector2f position = sf::Vector2f(0, 0));
+	typedef sf::Vector2f Direction;
+	typedef sf::Vector2f Node;
+	class SnakeNode
+	{
+	public:
+		SnakeNode(sf::Vector2f position = sf::Vector2f(0, 0));
+		SnakeNode(sf::Vector2f position = sf::Vector2f(0, 0), Direction direction = Direction(0, -1), float nodeRadius = 20.0f);
 
-	void setPosition(sf::Vector2f position);
-	void setPosition(float x, float y);
+		void setPosition(sf::Vector2f position);
+		void setPosition(float x, float y);
 
-	void move(float xOffset, float yOffset);
+		void setDirection(Direction direction);
+		void setDirection(float x, float y);
 
-	void render(sf::RenderWindow& window);
+		void move(float xOffset, float yOffset);
 
-	sf::Vector2f getPosition() const;
-	sf::FloatRect getBounds() const;
+		void render(sf::RenderWindow &window);
 
-	static const float Width;
-	static const float Height;
+		sf::Vector2f getPosition() const;
+		sf::FloatRect getBounds() const;
+		Direction getDirection() const;
 
-private:
-	sf::RectangleShape shape_;
-	sf::Vector2f position_;
-};
+		// static const float Width;
+		// static const float Height;
+		static float radius;
+
+	private:
+		// sf::RectangleShape shape_;
+		sf::Texture nodeTexture;
+		sf::Sprite shape_;
+		// sf::CircleShape shape_;
+		sf::Vector2f position_;
+		Direction direction_;
+	};
 }
 
 #endif

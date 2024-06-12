@@ -11,16 +11,6 @@
 
 namespace sfSnake
 {
-	typedef sf::Vector2f Direction;
-	typedef sf::Vector2f Node;
-	/*enum class Direction
-	{
-		Left,
-		Right,
-		Up,
-		Down
-	};*/
-
 	class Snake
 	{
 	public:
@@ -36,7 +26,7 @@ namespace sfSnake
 
 		unsigned getSize() const;
 
-		sf::Vector2f toWindow(sf::Vector2f node);// 返回蛇头位置
+		sf::Vector2f toWindow(sf::Vector2f node); // 返回蛇头位置
 
 	private:
 		void move();
@@ -60,10 +50,16 @@ namespace sfSnake
 
 		static const int InitialSize;
 
-		unsigned tailOverlap_;	// 尾部重叠数
-		unsigned int score_;	// 增长分数
-		bool speedup_;	// 是否加速
-		float nodeRadius_;	// 节点弧度
+		unsigned tailOverlap_; // 尾部重叠数
+		unsigned int score_;   // 增长分数
+		bool speedup_;		   // 是否加速
+		float nodeRadius_;	   // 节点半径
+
+		sf::Texture headTexture;
+		sf::Sprite headSprite;
+
+		sf::Texture nodeTexture;
+		sf::Sprite shape_;
 	};
 }
 

@@ -81,4 +81,23 @@ namespace sfSnake
 	};
 }
 
+/**
+ * @brief 将任意shape的origin居中
+ * @param shape any shape
+ *
+ * @code {.c++}
+ * setOriginMiddle(titleSprite_);
+ * @endcode
+ *
+ * @return sf::FloatRect shapeBounds
+ *
+ */
+template <typename T>
+inline sf::FloatRect setOriginMiddle(T &shape)
+{
+	sf::FloatRect shapeBounds = shape.getLocalBounds();
+	shape.setOrigin(shapeBounds.left + shapeBounds.width / 2,
+					shapeBounds.top + shapeBounds.height / 2); // TODO
+	return shapeBounds;
+}
 #endif
