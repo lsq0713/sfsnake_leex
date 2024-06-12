@@ -9,7 +9,7 @@
 
 using namespace sfSnake;
 
-GameScreen::GameScreen() : snake_()
+GameScreen::GameScreen() : snake_(), grid_()
 {
 }
 
@@ -33,7 +33,9 @@ void GameScreen::update(sf::Time delta)
 }
 
 void GameScreen::render(sf::RenderWindow &window)
-{
+{\
+	if (Game::GridVisibility)
+        grid_.render(window);
 	snake_.render(window);
 
 	for (auto fruit : fruit_)

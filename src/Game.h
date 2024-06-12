@@ -12,6 +12,18 @@
 
 namespace sfSnake
 {
+	const sf::Color GridColors[] =
+		{
+			sf::Color(0xfbfbfbaa), // White
+			sf::Color(0x31313116), // Black
+			sf::Color(0x5a351d16)  // Brown
+	};
+	const sf::Color BgColors[] =
+    {
+        sf::Color(0xeaeaeaee), // White
+        sf::Color(0x747474ff), // Black
+        sf::Color(0x9f6133aa)  // Brown
+};
 	class Game
 	{
 	public:
@@ -33,6 +45,10 @@ namespace sfSnake
 		static sf::VideoMode GameVideoMode; // 游戏窗口大小参数
 
 		static bool mouseButtonLocked;
+
+		static bool GridVisibility; // 网格可见性
+		static int GridColor;		// 网格颜色
+		static int BgColor;			// 背景颜色
 
 	private:
 		sf::RenderWindow window_;

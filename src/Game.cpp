@@ -12,6 +12,9 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 std::shared_ptr<Screen> Game::GameScreen = std::make_shared<MenuScreen>();
 
 bool Game::mouseButtonLocked = false;
+bool Game::GridVisibility = true;
+int Game::GridColor = 1;
+int Game::BgColor = 0;
 
 Game::Game()
 : window_(sf::VideoMode(Game::Width, Game::Height), "sfSnake")
@@ -56,7 +59,7 @@ void Game::update(sf::Time delta)
 
 void Game::render()
 {
-	window_.clear();
+	window_.clear(BgColors[BgColor]);
 	Game::GameScreen->render(window_);
 	window_.display();
 }

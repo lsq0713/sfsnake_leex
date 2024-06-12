@@ -6,6 +6,7 @@
 #include "Screen.h"
 #include "Snake.h"
 #include "Fruit.h"
+#include "Grid.h"
 
 namespace sfSnake
 {
@@ -22,6 +23,7 @@ public:
 
 private:
 	Snake snake_;
+	Grid grid_;
 	std::vector<Fruit> fruit_;
 };
 }

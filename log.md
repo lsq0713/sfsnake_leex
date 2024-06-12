@@ -230,3 +230,31 @@ void Snake::render(sf::RenderWindow &window)
 ### fix 水果pickup
 
 在`SnakeNode`中的shape_以`Circleshape`类型存在，去除了原先的渲染功能，只用来作为实体判定，以正确地pickup水果
+
+### fix Game::run
+
+将`render()`函数移到内循环，以减少资源浪费
+
+同时删除了一些无用的注释
+
+### feat 背景颜色以及网格
+
+在Game.*中增加了控制网格的相关参数
+
+```c++
+const sf::Color GridColors[] =
+      {
+         sf::Color(0xfbfbfbaa), // White
+         sf::Color(0x31313116), // Black
+         sf::Color(0x5a351d16)  // Brown
+   };
+   const sf::Color BgColors[] =
+    {
+        sf::Color(0xeaeaeaee), // White
+        sf::Color(0x747474ff), // Black
+        sf::Color(0x9f6133aa)  // Brown
+};
+static bool GridVisibility; // 网格可见性
+static int GridColor;// 网格颜色
+static int BgColor;// 背景颜色
+```
