@@ -12,7 +12,7 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 10.f);
 std::shared_ptr<Screen> Game::GameScreen = std::make_shared<MenuScreen>();
 
 bool Game::mouseButtonLocked = false;
-bool Game::GridVisibility = true;
+bool Game::GridVisibility = false;
 int Game::GridColor = 1;
 int Game::BgColor = 0;
 

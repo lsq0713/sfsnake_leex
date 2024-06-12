@@ -258,3 +258,11 @@ static bool GridVisibility; // 网格可见性
 static int GridColor;// 网格颜色
 static int BgColor;// 背景颜色
 ```
+
+## version 5 颜色改变
+
+通过对`MenuScreen`中处理输入的函数进行修改，与前面完成的改变接口相接，完成了对背景与网格控制的逻辑
+
+但是对于首页的显示处理的还不完善，无法让用户直观的控制。
+
+相关配色也不够和谐
