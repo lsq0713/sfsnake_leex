@@ -18,6 +18,7 @@ MenuScreen::MenuScreen()
 		"\n\n[G] Grid"
 		"\n\n[B] Background Color");
 	text_.setCharacterSize(24);
+	text_.setFillColor(sf::Color(0xA9A4B8ee));
 	snakeText_.setFont(font_);
 	snakeText_.setString("Snake!");
 	snakeText_.setFillColor(sf::Color::Green);
