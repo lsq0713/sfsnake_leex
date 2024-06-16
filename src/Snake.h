@@ -54,7 +54,6 @@ namespace sfSnake
 
 		unsigned tailOverlap_; // 尾部重叠数
 		unsigned int score_;   // 增长分数
-		bool speedup_;		   // 是否加速
 		float nodeRadius_;	   // 节点半径
 
 		sf::Texture headTexture;

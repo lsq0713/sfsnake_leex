@@ -1,3 +1,0 @@
-/home/lee/workspace/OOP/pj/sfSnake-master/CMakeFiles/main.dir
-/home/lee/workspace/OOP/pj/sfSnake-master/CMakeFiles/edit_cache.dir
-/home/lee/workspace/OOP/pj/sfSnake-master/CMakeFiles/rebuild_cache.dir

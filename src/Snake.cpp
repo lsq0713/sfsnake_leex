@@ -13,7 +13,7 @@ using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-Snake::Snake() : direction_(Direction(0, -1)), tailOverlap_(0u), score_(0), speedup_(false), nodeRadius_(Game::GameVideoMode.width / 100.0f), hitSelf_(false)
+Snake::Snake() : direction_(Direction(0, -1)), tailOverlap_(0u), score_(0), nodeRadius_(Game::GameVideoMode.width / 100.0f), hitSelf_(false)
 {
 	initNodes();
 
@@ -180,13 +180,9 @@ void Snake::move()
 {
 	SnakeNode &headNode = nodes_.back();
 	int times = speedup_ ? 2 : 1;
-	for (int i = 1; i <= times; i++)
-	{
-		// nodes_.insert(nodes_.begin(),
-		// 			  SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 2,
-		// 									 headNode.getPosition().y + direction_.y * i * nodeRadius_ * 2), direction_, nodeRadius_));
-		nodes_.push_back(SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 2,
-												headNode.getPosition().y + direction_.y * i * nodeRadius_ * 2),
+	
+		nodes_.push_back(SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * nodeRadius_ * 2,
+												headNode.getPosition().y + direction_.y * nodeRadius_ * 2),
 								   direction_, nodeRadius_));
 		if (tailOverlap_)
 			tailOverlap_--;
@@ -195,7 +191,6 @@ void Snake::move()
 			nodes_.pop_front();
 		}
 	}
-}
 
 void Snake::render(sf::RenderWindow &window)
 {

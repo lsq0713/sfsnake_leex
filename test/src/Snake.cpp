@@ -154,7 +154,6 @@ void Snake::checkSelfCollisions()
 	{
 		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
 		{
-			printf("i: %d\n", i);
 			dieSound_.play();
 			sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
 			hitSelf_ = true;

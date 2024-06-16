@@ -9,9 +9,6 @@ endif()
 find_package(SFML 2.5 COMPONENTS
   system window graphics audio REQUIRED)
 
-# set(BUILD_SHARED_LIBS OFF)
-# add_subdirectory(thirdparty/SFML)
-
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable(main ${SOURCES})
 target_include_directories(main PUBLIC src thirdparty/SFML/include)
