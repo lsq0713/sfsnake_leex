@@ -51,7 +51,6 @@ sf::VideoMode Game::GameVideoMode = Game::initVideoMode_();
 
 int Game::Width = sf::VideoMode::getDesktopMode().width / 2.0f;
 int Game::Height = sf::VideoMode::getDesktopMode().height / 2.0f;
-sf::Font Game::GameFont = sf::Font();
 
 void Game::handleInput()
 {

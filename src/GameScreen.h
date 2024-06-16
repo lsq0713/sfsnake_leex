@@ -25,6 +25,7 @@ private:
 	Snake snake_;
 	Grid grid_;
 	sf::Text score_;
+	sf::Font font_;
 	std::vector<Fruit> fruit_;
 };
 }

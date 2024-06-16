@@ -11,11 +11,13 @@ using namespace sfSnake;
 
 GameScreen::GameScreen() : snake_(), grid_()
 {
-	// score_.setFont(Game::GameFont);
-	// score_.setString(sf::String(L"分数:") + std::to_string(snake_.getScore()));
-	// score_.setFillColor(sf::Color::Blue);
-	// setOriginMiddle(score_);
-	// score_.setPosition(420.f, 30.f);
+	font_.loadFromFile("Fonts/menu.ttf");
+	score_.setFont(font_);
+	score_.setString(sf::String(L"分数:") + std::to_string(snake_.getScore()));
+	score_.setFillColor(sf::Color::Blue);
+	score_.setCharacterSize(48);
+	setOriginMiddle(score_);
+	score_.setPosition(420.f, 30.f);
 }
 
 void GameScreen::handleInput(sf::RenderWindow &window)
@@ -31,11 +33,11 @@ void GameScreen::update(sf::Time delta)
 	snake_.update(delta);
 	snake_.checkFruitCollisions(fruit_);
 
+	score_.setString(sf::String(L"分数:\t") + std::to_string(snake_.getScore()));
 	if (snake_.hitSelf())
 	{
 		Game::GameScreen = std::make_shared<GameOverScreen>(snake_.getSize());
 	}
-	// score_.setString(sf::String(L"分数:\t") + std::to_string(snake_.getScore()));
 }
 
 void GameScreen::render(sf::RenderWindow &window)
@@ -46,7 +48,7 @@ void GameScreen::render(sf::RenderWindow &window)
 
 	for (auto fruit : fruit_)
 		fruit.render(window);
-	// window.draw(score_);
+	window.draw(score_);
 }
 
 void GameScreen::generateFruit()

@@ -40,8 +40,6 @@ namespace sfSnake
 
 		static std::shared_ptr<Screen> GameScreen;
 
-		static sf::Font GameFont;
-
 		static sf::VideoMode initVideoMode_(); // 初始化游戏初始窗口大小
 
 		static sf::VideoMode GameVideoMode; // 游戏窗口大小参数

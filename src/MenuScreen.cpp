@@ -11,7 +11,7 @@ using namespace sfSnake;
 MenuScreen::MenuScreen()
 {
 	// Game::GameFont.loadFromFile("Fonts/game.ttf");
-	font_.loadFromFile("Fonts/game.ttf");
+	font_.loadFromFile("Fonts/menu.ttf");
 	text_.setFont(font_);
 	text_.setString(
 		sf::String(L"\n\n\n\n\n\n开始游戏：[空格]") +
