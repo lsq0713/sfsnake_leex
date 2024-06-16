@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include <vector>
+// #include <vector>
+#include <deque>
 
 #include "SnakeNode.h"
 #include "Fruit.h"
@@ -47,7 +48,7 @@ namespace sfSnake
 		sf::SoundBuffer dieBuffer_;
 		sf::Sound dieSound_;
 
-		std::vector<SnakeNode> nodes_;
+		std::deque<SnakeNode> nodes_;
 
 		static const int InitialSize;
 

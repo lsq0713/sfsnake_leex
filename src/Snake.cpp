@@ -49,8 +49,9 @@ void Snake::initNodes()
 	for (int i = 0; i < Snake::InitialSize; ++i)
 	{
 		nodes_.push_back(SnakeNode(sf::Vector2f(
-			Game::GameVideoMode.width / 2 - nodeRadius_ / 2,
-			Game::GameVideoMode.height / 2 - (nodeRadius_ / 2) + (nodeRadius_ * i * 2)), Direction(0, -1), nodeRadius_));
+									   Game::GameVideoMode.width / 2 - nodeRadius_ / 2,
+									   Game::GameVideoMode.height / 2 - (nodeRadius_ / 2) + (nodeRadius_ * i * 2)),
+								   Direction(0, -1), nodeRadius_));
 	}
 }
 
@@ -85,7 +86,7 @@ void Snake::handleInput(sf::RenderWindow &window)
 			{
 				direction_ =
 					static_cast<sf::Vector2f>(MousePosition) -
-					toWindow(nodes_[0].getPosition());
+					toWindow(nodes_.back().getPosition());
 				directionSize = length(direction_);
 				direction_.x /= directionSize;
 				direction_.y /= directionSize;
@@ -107,7 +108,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 
 	for (auto it = fruits.begin(); it != fruits.end(); ++it)
 	{
-		if (it->getBounds().intersects(nodes_[0].getBounds()))
+		if (it->getBounds().intersects(nodes_.back().getBounds()))
 			toRemove = it;
 	}
 
@@ -121,7 +122,7 @@ void Snake::checkFruitCollisions(std::vector<Fruit> &fruits)
 
 void Snake::grow(int score)
 {
-	tailOverlap_ += score * 3;
+	tailOverlap_ += score;
 	score_ += score;
 }
 
@@ -142,17 +143,18 @@ bool Snake::hitSelf() const
 
 void Snake::checkSelfCollisions()
 {
-	SnakeNode &headNode = nodes_[0];
+	SnakeNode &headNode = nodes_.back();
 	if (nodes_.size() < 5)
 	{
 		dieSound_.play();
 		sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
 		hitSelf_ = true;
 	} // 此处逻辑是为了后续加入减少长度机制设计的，同时增强健壮性，保证总有死亡可能
-	for (decltype(nodes_.size()) i = 5; i < nodes_.size(); ++i)
+	for (int i = nodes_.size() - 6; i >= 0; i--)
 	{
 		if (headNode.getBounds().intersects(nodes_[i].getBounds()))
 		{
+			printf("i: %d\n", i);
 			dieSound_.play();
 			sf::sleep(sf::seconds(dieBuffer_.getDuration().asSeconds()));
 			hitSelf_ = true;
@@ -162,7 +164,7 @@ void Snake::checkSelfCollisions()
 
 void Snake::checkEdgeCollisions()
 {
-	SnakeNode &headNode = nodes_[0];
+	SnakeNode &headNode = nodes_.back();
 
 	if (headNode.getPosition().x <= 0)
 		headNode.setPosition(Game::GameVideoMode.width, headNode.getPosition().y);
@@ -176,25 +178,28 @@ void Snake::checkEdgeCollisions()
 
 void Snake::move()
 {
-	SnakeNode &headNode = nodes_[0];
+	SnakeNode &headNode = nodes_.back();
 	int times = speedup_ ? 2 : 1;
 	for (int i = 1; i <= times; i++)
 	{
-		nodes_.insert(nodes_.begin(),
-					  SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 2,
-											 headNode.getPosition().y + direction_.y * i * nodeRadius_ * 2), direction_, nodeRadius_));
+		// nodes_.insert(nodes_.begin(),
+		// 			  SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 2,
+		// 									 headNode.getPosition().y + direction_.y * i * nodeRadius_ * 2), direction_, nodeRadius_));
+		nodes_.push_back(SnakeNode(sf::Vector2f(headNode.getPosition().x + direction_.x * i * nodeRadius_ * 2,
+												headNode.getPosition().y + direction_.y * i * nodeRadius_ * 2),
+								   direction_, nodeRadius_));
 		if (tailOverlap_)
 			tailOverlap_--;
 		else
 		{
-			nodes_.pop_back();
+			nodes_.pop_front();
 		}
 	}
 }
 
 void Snake::render(sf::RenderWindow &window)
 {
-	headSprite.setPosition(nodes_[0].getPosition());
+	headSprite.setPosition(nodes_.back().getPosition());
 	window.draw(headSprite);
 	static float angle;
 	static sf::Vector2f recDirection;
@@ -206,7 +211,7 @@ void Snake::render(sf::RenderWindow &window)
 		angle = -angle;
 	headSprite.setRotation(angle);
 
-	for (int i = 1; i < nodes_.size(); i++)
+	for (int i = 0; i < nodes_.size() - 1; i++)
 	{
 		shape_.setPosition(nodes_[i].getPosition());
 		Direction idirection = nodes_[i].getDirection();

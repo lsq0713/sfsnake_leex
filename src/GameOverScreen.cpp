@@ -11,12 +11,14 @@ using namespace sfSnake;
 
 GameOverScreen::GameOverScreen(std::size_t score) : score_(score)
 {
-	font_.loadFromFile("Fonts/game_over.ttf");
+	font_.loadFromFile("Fonts/menu.ttf");
 	text_.setFont(font_);
-	text_.setString("Your score: " + std::to_string(score) + "!"
-		"\n\nPress [SPACE] to retry"
-		"\n\nPress [ESC] to quit");
+	text_.setString(
+		sf::String(L"本轮得分: ") + std::to_wstring(score) +
+		sf::String(L"\n\n[SPACE] 再来一局") +
+		sf::String(L"\n\n[ESC]   不玩啦"));
 	text_.setFillColor(sf::Color::Red);
+	text_.setCharacterSize(64);
 
 	sf::FloatRect textBounds = text_.getLocalBounds();
 	text_.setOrigin(textBounds.left + textBounds.width / 2,

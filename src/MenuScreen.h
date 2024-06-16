@@ -20,6 +20,7 @@ private:
 	sf::Font font_;
 	sf::Text snakeText_;
 	sf::Text text_;
+	std::wstring nowGrid;
 };
 }
 

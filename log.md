@@ -278,3 +278,5 @@ static int BgColor;// 背景颜色
 ### fix 分数显示
 
 可以正确显示分数
+
+### fix 美化界面
