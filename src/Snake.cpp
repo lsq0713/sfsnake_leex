@@ -13,7 +13,7 @@ using namespace sfSnake;
 
 const int Snake::InitialSize = 5;
 
-Snake::Snake() : direction_(Direction(0, -1)), tailOverlap_(0u), score_(InitialSize), speedup_(false), nodeRadius_(Game::GameVideoMode.width / 100.0f), hitSelf_(false)
+Snake::Snake() : direction_(Direction(0, -1)), tailOverlap_(0u), score_(0), speedup_(false), nodeRadius_(Game::GameVideoMode.width / 100.0f), hitSelf_(false)
 {
 	initNodes();
 
@@ -49,8 +49,8 @@ void Snake::initNodes()
 	for (int i = 0; i < Snake::InitialSize; ++i)
 	{
 		nodes_.push_back(SnakeNode(sf::Vector2f(
-			Game::Width / 2 - nodeRadius_ / 2,
-			Game::Height / 2 - (nodeRadius_ / 2) + (nodeRadius_ * i * 2)), Direction(0, -1), nodeRadius_));
+			Game::GameVideoMode.width / 2 - nodeRadius_ / 2,
+			Game::GameVideoMode.height / 2 - (nodeRadius_ / 2) + (nodeRadius_ * i * 2)), Direction(0, -1), nodeRadius_));
 	}
 }
 
@@ -130,6 +130,11 @@ unsigned Snake::getSize() const
 	return nodes_.size();
 }
 
+unsigned Snake::getScore() const
+{
+	return score_;
+}
+
 bool Snake::hitSelf() const
 {
 	return hitSelf_;
@@ -160,12 +165,12 @@ void Snake::checkEdgeCollisions()
 	SnakeNode &headNode = nodes_[0];
 
 	if (headNode.getPosition().x <= 0)
-		headNode.setPosition(Game::Width, headNode.getPosition().y);
-	else if (headNode.getPosition().x >= Game::Width)
+		headNode.setPosition(Game::GameVideoMode.width, headNode.getPosition().y);
+	else if (headNode.getPosition().x >= Game::GameVideoMode.width)
 		headNode.setPosition(0, headNode.getPosition().y);
 	else if (headNode.getPosition().y <= 0)
-		headNode.setPosition(headNode.getPosition().x, Game::Height);
-	else if (headNode.getPosition().y >= Game::Height)
+		headNode.setPosition(headNode.getPosition().x, Game::GameVideoMode.height);
+	else if (headNode.getPosition().y >= Game::GameVideoMode.height)
 		headNode.setPosition(headNode.getPosition().x, 0);
 }
 

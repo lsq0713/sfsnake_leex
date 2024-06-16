@@ -19,11 +19,11 @@ namespace sfSnake
 			sf::Color(0x5a351d16)  // Brown
 	};
 	const sf::Color BgColors[] =
-    {
-        sf::Color(0xeaeaeaee), // White
-        sf::Color(0x747474ff), // Black
-        sf::Color(0x9f6133aa)  // Brown
-};
+		{
+			sf::Color(0xeaeaeaee), // White
+			sf::Color(0x747474ff), // Black
+			sf::Color(0x9f6133aa)  // Brown
+	};
 	class Game
 	{
 	public:
@@ -35,16 +35,23 @@ namespace sfSnake
 		void update(sf::Time delta);
 		void render();
 
-		static const int Width = 640;
-		static const int Height = 480;
+		static int Width;
+		static int Height;
 
 		static std::shared_ptr<Screen> GameScreen;
+
+		static sf::Font GameFont;
 
 		static sf::VideoMode initVideoMode_(); // 初始化游戏初始窗口大小
 
 		static sf::VideoMode GameVideoMode; // 游戏窗口大小参数
 
-		static bool mouseButtonLocked;
+		static sf::Clock mouseButtonClock;
+		static sf::Time mouseCD;
+		static bool mouseButtonLocked; // 鼠标锁
+		static sf::Clock keyButtonClock;
+		static sf::Time keyCD;
+		static bool keyButtonLocked; // 键盘锁
 
 		static bool GridVisibility; // 网格可见性
 		static int GridColor;		// 网格颜色

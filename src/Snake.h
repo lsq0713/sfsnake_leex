@@ -25,6 +25,7 @@ namespace sfSnake
 		bool hitSelf() const;
 
 		unsigned getSize() const;
+		unsigned getScore() const;
 
 		sf::Vector2f toWindow(sf::Vector2f node); // 返回蛇头位置
 
